@@ -8,13 +8,13 @@ public class Board {
 
     }
 
-    public Board setPieceInPosition(int row, int column, Piece piece) {
-        this.pieces[row][column] = piece;
+    public Board setPieceInPosition(int column, int row, Piece piece) {
+        this.pieces[column][row] = piece;
         return this;
     }
 
-    public Piece getPieceInPosition(int row, int column) {
-        return this.pieces[row][column];
+    public Piece getPieceInPosition(int column, int row) {
+        return this.pieces[column][row];
     }
 
 }
