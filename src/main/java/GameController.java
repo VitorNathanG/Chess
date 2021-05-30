@@ -109,8 +109,12 @@ public class GameController {
             }
             case ROOK:
                 return generateParallelMoves(columnFrom, rowFrom);
-            case BISHOP: {
+            case BISHOP:
                 return generateDiagonalMoves(columnFrom, rowFrom);
+            case QUEEN: {
+                possibleMoves = generateParallelMoves(columnFrom, rowFrom);
+                possibleMoves.addAll(generateDiagonalMoves(columnFrom, rowFrom));
+                return possibleMoves;
             }
         }
         return possibleMoves;
