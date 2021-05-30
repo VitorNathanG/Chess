@@ -94,58 +94,75 @@ public class GameController {
                         }
                     }
                     case ROOK: {
-                        for (int i = rowFrom + 1; i <= 8 ; i++) {
+                        for (int i = 1; i <= 8 ; i++) {
                             ArrayList<Integer> move = new ArrayList<Integer>();
-                            move.add(columnFrom);
-                            move.add(i);
-                            if(game.getBoard().getPieceInPosition(columnFrom, i) == null) {
+                            if(rowFrom + i < 9){
+                                move.add(columnFrom);
+                                move.add(rowFrom + i);
+                            } else {
+                                break;
+                            }
+                            if(game.getBoard().getPieceInPosition(columnFrom, rowFrom + i) == null) {
                                 possibleMoves.add(move);
                             } else {
-                                if(game.getBoard().getPieceInPosition(columnFrom, i).getPieceColor() == PieceColor.WHITE) {
+                                if(game.getBoard().getPieceInPosition(columnFrom, rowFrom + i).getPieceColor() == PieceColor.WHITE) {
                                     possibleMoves.add(move);
                                 }
                                 break;
                             }
                         }
-                        for (int i = rowFrom - 1; i > 0 ; i--) {
+                        for (int i = 1; i <= 8 ; i++) {
                             ArrayList<Integer> move = new ArrayList<Integer>();
-                            move.add(columnFrom);
-                            move.add(i);
-                            if(game.getBoard().getPieceInPosition(columnFrom, i) == null) {
+                            if(rowFrom - i > 0){
+                                move.add(columnFrom);
+                                move.add(rowFrom - i);
+                            } else {
+                                break;
+                            }
+                            if(game.getBoard().getPieceInPosition(columnFrom, rowFrom - i) == null) {
                                 possibleMoves.add(move);
                             } else {
-                                if(game.getBoard().getPieceInPosition(columnFrom, i).getPieceColor() == PieceColor.WHITE) {
+                                if(game.getBoard().getPieceInPosition(columnFrom, rowFrom - i).getPieceColor() == PieceColor.WHITE) {
                                     possibleMoves.add(move);
                                 }
                                 break;
                             }
                         }
-                        for (int i = columnFrom + 1; i <= 8 ; i++) {
+                        for (int i = 1; i <= 8 ; i++) {
                             ArrayList<Integer> move = new ArrayList<Integer>();
-                            move.add(i);
-                            move.add(rowFrom);
-                            if(game.getBoard().getPieceInPosition(i, rowFrom) == null) {
+                            if(columnFrom - i > 0){
+                                move.add(columnFrom - i);
+                                move.add(rowFrom);
+                            } else {
+                                break;
+                            }
+                            if(game.getBoard().getPieceInPosition(columnFrom - i, rowFrom) == null) {
                                 possibleMoves.add(move);
                             } else {
-                                if(game.getBoard().getPieceInPosition(i, rowFrom).getPieceColor() == PieceColor.WHITE) {
+                                if(game.getBoard().getPieceInPosition(columnFrom - i, rowFrom).getPieceColor() == PieceColor.WHITE) {
                                     possibleMoves.add(move);
                                 }
                                 break;
                             }
                         }
-                        for (int i = columnFrom - 1; i > 0 ; i--) {
+                        for (int i = 1; i <= 8 ; i++) {
                             ArrayList<Integer> move = new ArrayList<Integer>();
-                            move.add(i);
-                            move.add(rowFrom);
-                            if(game.getBoard().getPieceInPosition(i, rowFrom) == null) {
+                            if(columnFrom + i < 9){
+                                move.add(columnFrom + i);
+                                move.add(rowFrom);
+                            } else {
+                                break;
+                            }
+                            if(game.getBoard().getPieceInPosition(columnFrom + i, rowFrom) == null) {
                                 possibleMoves.add(move);
                             } else {
-                                if(game.getBoard().getPieceInPosition(i, rowFrom).getPieceColor() == PieceColor.WHITE) {
+                                if(game.getBoard().getPieceInPosition(columnFrom + i, rowFrom).getPieceColor() == PieceColor.WHITE) {
                                     possibleMoves.add(move);
                                 }
                                 break;
                             }
                         }
+
                         return possibleMoves;
                     }
                     case BISHOP: {
