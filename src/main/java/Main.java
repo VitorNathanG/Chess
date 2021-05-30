@@ -11,7 +11,6 @@ public class Main {
 //                .setPieceInPosition(5, 5, new Piece(PieceType.BISHOP, PieceColor.WHITE))
 //                .setPieceInPosition(5, 3, new Piece(PieceType.BISHOP, PieceColor.WHITE))
                 );
-        System.out.println(gameController.positionsCartesianToChessNotation(gameController.getPossibleMoves(testColumn, testRow,
-                gameController.getGame().getBoard().getPieceInPosition(testColumn,testRow))));
+        System.out.println(gameController.positionsCartesianToChessNotation(gameController.getPossibleMoves(testColumn, testRow)));
     }
 }
