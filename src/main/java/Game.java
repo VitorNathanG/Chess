@@ -3,11 +3,8 @@ public class Game {
     private Player whitePlayer;
     private Player blackPlayer;
     private Player winner = null;
-    private int rowWhiteKing = 1;
-    private int columnWhiteKing = 5;
-    private int rowBlackKing = 8;
-    private int columnBlackKing = 5;
-    private Color turn = Color.WHITE;
+
+    private PieceColor turn = PieceColor.WHITE;
     private boolean whiteCanCastleKingSide = true;
     private boolean whiteCanCastleQueenSide = true;
     private boolean blackCanCastleKingSide = true;
@@ -56,11 +53,11 @@ public class Game {
         this.winner = winner;
     }
 
-    public Color getTurn() {
+    public PieceColor getTurn() {
         return turn;
     }
 
-    public void setTurn(Color turn) {
+    public void setTurn(PieceColor turn) {
         this.turn = turn;
     }
 
@@ -102,37 +99,5 @@ public class Game {
 
     public void setNextMoveCanEnPassant(boolean nextMoveCanEnPassant) {
         this.nextMoveCanEnPassant = nextMoveCanEnPassant;
-    }
-
-    public int getRowWhiteKing() {
-        return rowWhiteKing;
-    }
-
-    public void setRowWhiteKing(int rowWhiteKing) {
-        this.rowWhiteKing = rowWhiteKing;
-    }
-
-    public int getColumnWhiteKing() {
-        return columnWhiteKing;
-    }
-
-    public void setColumnWhiteKing(int columnWhiteKing) {
-        this.columnWhiteKing = columnWhiteKing;
-    }
-
-    public int getRowBlackKing() {
-        return rowBlackKing;
-    }
-
-    public void setRowBlackKing(int rowBlackKing) {
-        this.rowBlackKing = rowBlackKing;
-    }
-
-    public int getColumnBlackKing() {
-        return columnBlackKing;
-    }
-
-    public void setColumnBlackKing(int columnBlackKing) {
-        this.columnBlackKing = columnBlackKing;
     }
 }
