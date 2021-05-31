@@ -13,7 +13,10 @@ public class Board {
     }
 
     public Board setPieceInPosition(int column, int row, Piece piece) {
-        if(piece == null) return this;
+        if(piece == null) {
+            pieces[column][row] = null;
+            return this;
+        }
         if(piece.getPieceType().equals(PieceType.KING)) {
             switch (piece.getPieceColor()){
                 case WHITE -> {

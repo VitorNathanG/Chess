@@ -10,6 +10,8 @@ public class Game {
     private boolean blackCanCastleKingSide = true;
     private boolean blackCanCastleQueenSide = true;
     private boolean nextMoveCanEnPassant;
+    private boolean whiteInCheck = false;
+    private boolean blackInCheck = false;
 
     public Game(Board board, Player whitePlayer, Player blackPlayer) {
         this.board = board;
@@ -99,5 +101,21 @@ public class Game {
 
     public void setNextMoveCanEnPassant(boolean nextMoveCanEnPassant) {
         this.nextMoveCanEnPassant = nextMoveCanEnPassant;
+    }
+
+    public boolean isWhiteInCheck() {
+        return whiteInCheck;
+    }
+
+    public void setWhiteInCheck(boolean whiteInCheck) {
+        this.whiteInCheck = whiteInCheck;
+    }
+
+    public boolean isBlackInCheck() {
+        return blackInCheck;
+    }
+
+    public void setBlackInCheck(boolean blackInCheck) {
+        this.blackInCheck = blackInCheck;
     }
 }

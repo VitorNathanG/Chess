@@ -21,10 +21,11 @@ public class GameController {
     public boolean isUnderAttack(int column, int row, PieceColor color) {
         for (int i = 1; i < 9; i++) {
             for (int j = 1; j < 9; j++) {
+
                 if (game.getBoard().getPieceInPosition(i, j) == null) {
                     continue;
                 } else if (game.getBoard().getPieceInPosition(i, j).getPieceColor().equals(color)) {
-                    ArrayList<ArrayList<Integer>> possibleMoves = getPossibleMoves(i, j);
+                    ArrayList<ArrayList<Integer>> possibleMoves = getValidMoves(i, j);
 
                     if (possibleMoves.stream().anyMatch(move -> (move.get(0) == column && move.get(1) == row))) {
                         return true;
@@ -38,23 +39,44 @@ public class GameController {
     public boolean movePiece(int columnFrom, int rowFrom, int columnTo, int rowTo) {
         ArrayList<ArrayList<Integer>> validMoves = getValidMoves(columnFrom, rowFrom);
         boolean isAValidMove =
-                validMoves.stream().anyMatch(move -> columnFrom == move.get(0) && rowFrom == move.get(1));
+                validMoves.stream().anyMatch(move -> columnTo == move.get(0) && rowTo == move.get(1));
         if (isAValidMove) {
             game.getBoard()
                     .setPieceInPosition(columnTo, rowTo, game.getBoard().getPieceInPosition(columnFrom, rowFrom))
                     .setPieceInPosition(columnFrom, rowFrom, null);
+            verifyIfMoveIsACheck(columnTo, rowTo);
+            switch (game.getTurn()) {
+                case WHITE -> game.setTurn(PieceColor.BLACK);
+                case BLACK -> game.setTurn(PieceColor.WHITE);
+            }
+
             return true;
         } else {
             return false;
         }
     }
 
+    public void verifyIfMoveIsACheck(int columnTo, int rowTo) {
+        ArrayList<ArrayList<Integer>> validNextMoves = getValidMoves(columnTo, rowTo);
+        PieceColor pieceColor = game.getBoard().getPieceInPosition(columnTo, rowTo).getPieceColor();
+        boolean isCheck;
+        if (pieceColor.equals(PieceColor.BLACK)) {
+            if(validNextMoves.stream().anyMatch(move -> game.getBoard().getColumnWhiteKing() == move.get(0) && game.getBoard().getRowWhiteKing() == move.get(1))){
+                game.setWhiteInCheck(true);
+            }
+        } else {
+            if(validNextMoves.stream().anyMatch(move -> game.getBoard().getColumnBlackKing() == move.get(0) && game.getBoard().getRowBlackKing() == move.get(1))){
+                game.setBlackInCheck(true);
+            }
+        }
+    }
+
     public boolean isKingInCheck(PieceColor color) {
         switch (color) {
             case WHITE:
-                return isUnderAttack(game.getBoard().getColumnWhiteKing(), game.getBoard().getRowWhiteKing(), PieceColor.BLACK);
+                return getGame().isWhiteInCheck();
         }
-        return isUnderAttack(game.getBoard().getColumnBlackKing(), game.getBoard().getRowBlackKing(), PieceColor.WHITE);
+        return getGame().isBlackInCheck();
     }
 
     private ArrayList<ArrayList<Integer>> getPossibleMoves(int columnFrom, int rowFrom) {
@@ -70,7 +92,7 @@ public class GameController {
                                     PieceColor.WHITE)) {
                                 if (game.getBoard().getPieceInPosition(7, 8) == null && !isUnderAttack(7, 8,
                                         PieceColor.WHITE)) {
-                                    ArrayList<Integer> move = new ArrayList<Integer>();
+                                    ArrayList<Integer> move = new ArrayList<>();
                                     move.add(7);
                                     move.add(8);
                                     possibleMoves.add(move);
@@ -83,7 +105,7 @@ public class GameController {
                                     PieceColor.WHITE)) {
                                 if (game.getBoard().getPieceInPosition(3, 8) == null && !isUnderAttack(3, 8,
                                         PieceColor.WHITE)) {
-                                    ArrayList<Integer> move = new ArrayList<Integer>();
+                                    ArrayList<Integer> move = new ArrayList<>();
                                     move.add(3);
                                     move.add(8);
                                     possibleMoves.add(move);
@@ -102,7 +124,7 @@ public class GameController {
                                     }
                                 }
 
-                                ArrayList<Integer> move = new ArrayList<Integer>();
+                                ArrayList<Integer> move = new ArrayList<>();
                                 move.add(columnFrom + i);
                                 move.add(rowFrom + j);
                                 possibleMoves.add(move);
@@ -117,7 +139,7 @@ public class GameController {
                                     PieceColor.BLACK)) {
                                 if (game.getBoard().getPieceInPosition(7, 1) == null && !isUnderAttack(7, 1,
                                         PieceColor.BLACK)) {
-                                    ArrayList<Integer> move = new ArrayList<Integer>();
+                                    ArrayList<Integer> move = new ArrayList<>();
                                     move.add(7);
                                     move.add(1);
                                     possibleMoves.add(move);
@@ -130,7 +152,7 @@ public class GameController {
                                     PieceColor.WHITE)) {
                                 if (game.getBoard().getPieceInPosition(3, 1) == null && !isUnderAttack(3, 1,
                                         PieceColor.WHITE)) {
-                                    ArrayList<Integer> move = new ArrayList<Integer>();
+                                    ArrayList<Integer> move = new ArrayList<>();
                                     move.add(3);
                                     move.add(1);
                                     possibleMoves.add(move);
@@ -148,7 +170,7 @@ public class GameController {
                                         continue;
                                     }
                                 }
-                                ArrayList<Integer> move = new ArrayList<Integer>();
+                                ArrayList<Integer> move = new ArrayList<>();
                                 move.add(columnFrom + i);
                                 move.add(rowFrom + j);
                                 possibleMoves.add(move);
@@ -167,6 +189,46 @@ public class GameController {
                 possibleMoves.addAll(generateDiagonalMoves(columnFrom, rowFrom));
                 return possibleMoves;
             }
+            case PAWN:
+                switch (game.getBoard().getPieceInPosition(columnFrom, rowFrom).getPieceColor()) {
+                    case WHITE -> {
+                        if (rowFrom == 2) {
+                            if (game.getBoard().getPieceInPosition(columnFrom, 3) == null) {
+                                ArrayList<Integer> move = new ArrayList<>();
+                                move.add(columnFrom);
+                                move.add(3);
+                                possibleMoves.add(move);
+                            }
+                            if (game.getBoard().getPieceInPosition(columnFrom, 4) == null) {
+                                ArrayList<Integer> move = new ArrayList<>();
+                                move.add(columnFrom);
+                                move.add(4);
+                                possibleMoves.add(move);
+                            }
+                        } else {
+                            if (game.getBoard().getPieceInPosition(columnFrom, rowFrom + 1) == null) {
+                                ArrayList<Integer> move = new ArrayList<>();
+                                move.add(columnFrom);
+                                move.add(rowFrom + 1);
+                                possibleMoves.add(move);
+                            }
+                        }
+                        if (game.getBoard().getPieceInPosition(columnFrom - 1, rowFrom + 1) != null &&
+                                game.getBoard().getPieceInPosition(columnFrom - 1, rowFrom + 1).getPieceColor() == PieceColor.BLACK) {
+                            ArrayList<Integer> move = new ArrayList<>();
+                            move.add(columnFrom - 1);
+                            move.add(rowFrom + 1);
+                            possibleMoves.add(move);
+                        }
+                        if (game.getBoard().getPieceInPosition(columnFrom + 1, rowFrom + 1) != null &&
+                                game.getBoard().getPieceInPosition(columnFrom + 1, rowFrom + 1).getPieceColor() == PieceColor.BLACK) {
+                            ArrayList<Integer> move = new ArrayList<>();
+                            move.add(columnFrom + 1);
+                            move.add(rowFrom + 1);
+                            possibleMoves.add(move);
+                        }
+                    }
+                }
         }
         return possibleMoves;
     }
