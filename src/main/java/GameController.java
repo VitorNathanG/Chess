@@ -6,10 +6,6 @@ public class GameController {
 
 	private Game game;
 
-	{
-
-	}
-
 	public void createNewGame(Player white, Player black) {
 		this.game = new Game(BoardBuilder.newGameBoard(), white, black);
 	}
@@ -63,7 +59,7 @@ public class GameController {
 						.setPieceInPosition(columnTo, rowTo,
 								this.game.getBoard().getPieceInPosition(columnFrom, rowFrom))
 						.setPieceInPosition(columnFrom, rowFrom, null);
-				this.game.setEnPassantPosition(new int[] { columnTo, rowTo - (rowFrom - rowTo) / 2 });
+				this.game.setEnPassantPosition(new int[] { columnTo, rowFrom + (rowTo - rowFrom) / 2 });
 				// A player castles king side
 			} else if (this.game.getBoard().getPieceInPosition(columnFrom, rowFrom).getPieceType() == PieceType.KING
 					&& columnTo - columnFrom == 2) {
@@ -151,6 +147,8 @@ public class GameController {
 			this.game.setNextMoveCanEnPassant(false);
 			if (isNextMoveEnPassant) {
 				this.game.setNextMoveCanEnPassant(true);
+			} else {
+				this.game.setEnPassantPosition(null);
 			}
 			this.game.getBoard().terminalBoard();
 			return true;
@@ -159,7 +157,6 @@ public class GameController {
 		}
 	}
 
-	// TODO this method considering the possibility of a discovered check
 	public boolean verifyIfMoveIsACheck(int columnTo, int rowTo) {
 		ArrayList<ArrayList<Integer>> validNextMoves = getValidMoves(columnTo, rowTo);
 		PieceColor pieceColor = this.game.getBoard().getPieceInPosition(columnTo, rowTo).getPieceColor();
@@ -226,7 +223,7 @@ public class GameController {
 									.getPieceColor() == PieceColor.BLACK) {
 								continue;
 							}
-						} 
+						}
 
 						ArrayList<Integer> move = new ArrayList<>();
 						move.add(columnFrom + i);
@@ -278,7 +275,7 @@ public class GameController {
 									.getPieceColor() == PieceColor.WHITE) {
 								continue;
 							}
-						} 
+						}
 						ArrayList<Integer> move = new ArrayList<>();
 						move.add(columnFrom + i);
 						move.add(rowFrom + j);
@@ -302,6 +299,7 @@ public class GameController {
 		case PAWN:
 			switch (this.game.getBoard().getPieceInPosition(columnFrom, rowFrom).getPieceColor()) {
 			case WHITE -> {
+				// First move
 				if (rowFrom == 2) {
 					if (this.game.getBoard().getPieceInPosition(columnFrom, 3) == null) {
 						ArrayList<Integer> move = new ArrayList<>();
@@ -315,6 +313,7 @@ public class GameController {
 						move.add(4);
 						possibleMoves.add(move);
 					}
+					// Not the pawn's first move
 				} else {
 					if (isWithinTheBoard(columnFrom, rowFrom + 1)
 							&& this.game.getBoard().getPieceInPosition(columnFrom, rowFrom + 1) == null) {
@@ -324,6 +323,7 @@ public class GameController {
 						possibleMoves.add(move);
 					}
 				}
+				// Capture to the left
 				if (isWithinTheBoard(columnFrom - 1, rowFrom + 1)
 						&& this.game.getBoard().getPieceInPosition(columnFrom - 1, rowFrom + 1) != null
 						&& this.game.getBoard().getPieceInPosition(columnFrom - 1, rowFrom + 1)
@@ -333,6 +333,7 @@ public class GameController {
 					move.add(rowFrom + 1);
 					possibleMoves.add(move);
 				}
+				// Capture to the right
 				if (isWithinTheBoard(columnFrom + 1, rowFrom + 1)
 						&& this.game.getBoard().getPieceInPosition(columnFrom + 1, rowFrom + 1) != null
 						&& this.game.getBoard().getPieceInPosition(columnFrom + 1, rowFrom + 1)
@@ -342,6 +343,25 @@ public class GameController {
 					move.add(rowFrom + 1);
 					possibleMoves.add(move);
 				}
+				if (this.game.isNextMoveCanEnPassant()) {
+					// En passant capture to the right
+					if (columnFrom + 1 == this.game.getEnPassantPosition()[0]
+							&& rowFrom + 1 == this.game.getEnPassantPosition()[1]) {
+						ArrayList<Integer> move = new ArrayList<>();
+						move.add(columnFrom + 1);
+						move.add(rowFrom + 1);
+						possibleMoves.add(move);
+					}
+					// En passant capture to the left
+					if (columnFrom - 1 == this.game.getEnPassantPosition()[0]
+							&& rowFrom + 1 == this.game.getEnPassantPosition()[1]) {
+						ArrayList<Integer> move = new ArrayList<>();
+						move.add(columnFrom - 1);
+						move.add(rowFrom + 1);
+						possibleMoves.add(move);
+					}
+				}
+
 			}
 			case BLACK -> {
 				if (rowFrom == 7) {
@@ -590,7 +610,8 @@ public class GameController {
 						&& this.game.getBoard().getPieceInPosition(i, j).getPieceColor().equals(pieceColor)) {
 					ArrayList<ArrayList<Integer>> movimentos = this.getValidMoves(i, j);
 					for (ArrayList<Integer> movimento : movimentos) {
-						allValidMoves.add(new Move(i, j, movimento.get(0), movimento.get(1), this.game.getBoard().getPieceInPosition(i, j).getPieceType(),
+						allValidMoves.add(new Move(i, j, movimento.get(0), movimento.get(1),
+								this.game.getBoard().getPieceInPosition(i, j).getPieceType(),
 								this.game.getBoard().getPieceInPosition(i, j).getPieceColor()));
 					}
 				}
@@ -598,7 +619,7 @@ public class GameController {
 		}
 		return allValidMoves;
 	}
-	
+
 	public void showAllValidMoves(PieceColor pieceColor) {
 		generateAllValidMoves(pieceColor).stream().forEach(System.out::println);
 	}
