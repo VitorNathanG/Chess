@@ -14,7 +14,8 @@ public class Main {
         gameController.movePiece(3, 7, 3, 5);
         gameController.movePiece(7, 1, 6, 2);
         gameController.movePiece(2, 7, 2, 5);
-        gameController.movePiece(5,1,7,1);
+        gameController.movePiece(5, 1, 7, 1);
+        System.out.println(gameController.positionsCartesianToChessNotation(gameController.getValidMoves(3, 5)));
 
 
         //System.out.println(gameController.getValidMoves(testColumn, testRow));
