@@ -12,6 +12,7 @@ public class Game {
     private boolean nextMoveCanEnPassant;
     private boolean whiteInCheck = false;
     private boolean blackInCheck = false;
+    private int[] enPassantPosition = null;
 
     public Game(Board board, Player whitePlayer, Player blackPlayer) {
         this.board = board;
@@ -117,5 +118,13 @@ public class Game {
 
     public void setBlackInCheck(boolean blackInCheck) {
         this.blackInCheck = blackInCheck;
+    }
+
+    public int[] getEnPassantPosition() {
+        return enPassantPosition;
+    }
+
+    public void setEnPassantPosition(int[] enPassantPosition) {
+        this.enPassantPosition = enPassantPosition;
     }
 }

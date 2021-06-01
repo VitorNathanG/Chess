@@ -23,4 +23,12 @@ public class Piece {
     public void setPieceColor(PieceColor pieceColor) {
         this.pieceColor = pieceColor;
     }
+
+    @Override
+    public String toString() {
+        return "Piece{" +
+                "pieceType=" + pieceType +
+                ", pieceColor=" + pieceColor +
+                '}';
+    }
 }
