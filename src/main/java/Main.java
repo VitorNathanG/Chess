@@ -6,15 +6,22 @@ public class Main {
 		GameController gameController = new GameController();
 
 		gameController.newPosition(BoardBuilder.newGameBoard());
-		gameController.showAllValidMoves(PieceColor.WHITE);
-		gameController.movePiece(5, 2, 5, 4);
-		gameController.movePiece(8, 7, 8, 6);
-		gameController.movePiece(5, 4, 5, 5);
-		gameController.movePiece(4, 7, 4, 5);
-		gameController.showAllValidMoves(PieceColor.WHITE);
-		System.out.println(gameController.getGame().isNextMoveCanEnPassant()); 
-		gameController.movePiece(5, 5, 4, 6);
+//		gameController.showAllValidMoves(PieceColor.WHITE);
+//		gameController.movePiece(5, 2, 5, 4);
+//		gameController.movePiece(8, 7, 8, 6);
+//		gameController.movePiece(5, 4, 5, 5);
+//		gameController.movePiece(4, 7, 4, 5);
+//		gameController.showAllValidMoves(PieceColor.WHITE);
+//		System.out.println(gameController.getGame().isNextMoveCanEnPassant()); 
+//		gameController.movePiece(5, 5, 4, 6);
+
+
+		ConsoleCommandParser ccp = new ConsoleCommandParser(gameController);
+		while(true) {
+			ccp.waitForNextCommand();
+		}
 		
+
 //		gameController.movePiece(5, 7, 5, 5);
 //		gameController.movePiece(6, 1, 5, 3);
 //		gameController.movePiece(4, 7, 4, 5);
