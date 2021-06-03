@@ -14,6 +14,7 @@ public class GameController {
 		this.game = new Game(board);
 	}
 
+	//TODO verify if this method is not working properly
 	public boolean isUnderAttack(int column, int row, PieceColor color) {
 		for (int i = 1; i < 9; i++) {
 			for (int j = 1; j < 9; j++) {
@@ -22,6 +23,7 @@ public class GameController {
 				}
 				if (this.game.getBoard().getPieceInPosition(i, j).getPieceColor().equals(color)
 						&& this.game.getBoard().getPieceInPosition(i, j).getPieceType().equals(PieceType.KING)) {
+
 				} else if (this.game.getBoard().getPieceInPosition(i, j).getPieceColor().equals(color)) {
 					ArrayList<ArrayList<Integer>> possibleMoves = getValidMoves(i, j);
 
@@ -35,6 +37,11 @@ public class GameController {
 	}
 
 	public boolean movePiece(int columnFrom, int rowFrom, int columnTo, int rowTo) {
+		if(this.game.getBoard().getPieceInPosition(columnFrom, rowFrom) == null) {
+			System.out.println("Invalid move");
+			return false;
+		}
+
 		if (this.game.getBoard().getPieceInPosition(columnFrom, rowFrom).getPieceColor() != this.game.getTurn()) {
 			System.out.println("It's the other player's move");
 			return false;
@@ -150,7 +157,6 @@ public class GameController {
 			} else {
 				this.game.setEnPassantPosition(null);
 			}
-			this.game.getBoard().terminalBoard();
 			return true;
 		} else {
 			return false;
@@ -158,15 +164,14 @@ public class GameController {
 	}
 
 	public boolean verifyIfMoveIsACheck(int columnTo, int rowTo) {
-		ArrayList<ArrayList<Integer>> validNextMoves = getValidMoves(columnTo, rowTo);
 		PieceColor pieceColor = this.game.getBoard().getPieceInPosition(columnTo, rowTo).getPieceColor();
 		PieceColor whoDefends = (pieceColor == PieceColor.BLACK ? PieceColor.WHITE : PieceColor.BLACK);
 		if (pieceColor.equals(PieceColor.BLACK)) {
 			return isUnderAttack(this.game.getBoard().getColumnWhiteKing(), this.game.getBoard().getRowWhiteKing(),
-					whoDefends);
+					PieceColor.BLACK);
 		}
 		return isUnderAttack(this.game.getBoard().getColumnBlackKing(), this.game.getBoard().getRowBlackKing(),
-				whoDefends);
+				PieceColor.WHITE);
 	}
 
 	public boolean isKingInCheck(PieceColor color) {

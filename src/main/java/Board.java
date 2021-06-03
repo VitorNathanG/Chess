@@ -83,8 +83,9 @@ public class Board {
     }
 
     public void terminalBoard() {
-        System.out.println("-------------------------");
+        System.out.println("----------------------------");
         for (int i = 8; i > 0; i--) {
+            System.out.print(i + "  ");
             System.out.print("|");
             for (int j = 1; j < 9; j++) {
                 if (pieces[j][i] == null) {
@@ -110,6 +111,7 @@ public class Board {
             }
             System.out.println();
         }
-        System.out.println("-------------------------");
+        System.out.println("     a  b  c  d  e  f  g  h");
+        System.out.println("----------------------------");
     }
 }

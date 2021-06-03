@@ -8,17 +8,25 @@ public class ConsoleCommandParser {
     	this.gameController = gameController;
     }
 	
-    public void waitForNextCommand() {
+    public void waitForCommand() {
         Scanner scanner = new Scanner(System.in);
+        
         String userInput = scanner.nextLine();
         
         if(!userInput.startsWith("-")) {
-        	byte[] position = userInput.getBytes();
-        	int columnFrom = position[0] - 96;
-        	int rowFrom = position[1] - 48;
-        	int columnTo = position[3] - 96;
-        	int rowTo = position[4] - 48;
-        	this.gameController.movePiece(columnFrom, rowFrom, columnTo, rowTo);
+            if(userInput.length() != 5) {
+                System.out.println("Invalid input");
+            } else {
+
+                byte[] position = userInput.getBytes();
+                int columnFrom = position[0] - 96;
+                int rowFrom = position[1] - 48;
+                int columnTo = position[3] - 96;
+                int rowTo = position[4] - 48;
+                if(!this.gameController.movePiece(columnFrom, rowFrom, columnTo, rowTo)) {
+                    System.out.println("Invalid move");
+                }
+            }
         }
 
         if(userInput.equals("-end")) {
@@ -27,8 +35,5 @@ public class ConsoleCommandParser {
         	this.gameController.createNewGame(null, null);
         }
         this.gameController.getGame().getBoard().terminalBoard();
-        scanner.close();
     }
-    
-    
 }
