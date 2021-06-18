@@ -24,8 +24,6 @@ Disponível como um container do Docker. Para executar o container:
 
 1. Entrar no repositório `cd Chess`
 
-1. Mudar para branch docker `git checkout docker`
-
 1. Faça a construção do container com o comando `docker build -t chessbrain .`
 
 1. Execute o container usando `docker run -i chessbrain`
