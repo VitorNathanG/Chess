@@ -1,0 +1,3 @@
+Manifest-Version: 15
+Main-Class: Main
+Sealed: true

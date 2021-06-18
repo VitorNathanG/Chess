@@ -1,22 +1,16 @@
 public class Main {
 
-    public static void main(String[] args) {
-        int testColumn = 5;
-        int testRow = 4;
-        GameController gameController = new GameController();
+	public static void main(String[] args) {
+		int testColumn = 5;
+		int testRow = 4;
+		GameController gameController = new GameController();
 
-        gameController.newPosition(BoardBuilder.newGameBoard());
-        gameController.movePiece(5, 2, 5, 4);
-        gameController.movePiece(5, 7, 5, 5);
-        gameController.movePiece(6, 1, 5, 3);
-        gameController.movePiece(4, 7, 4, 5);
-        gameController.movePiece(6, 2, 6, 4);
-        gameController.movePiece(3, 7, 3, 5);
-        gameController.movePiece(7, 1, 6, 2);
-        gameController.movePiece(2, 7, 2, 5);
-        gameController.movePiece(5,1,7,1);
+		gameController.newPosition(BoardBuilder.newGameBoard());
+		gameController.getGame().getBoard().terminalBoard();
 
-
-        //System.out.println(gameController.getValidMoves(testColumn, testRow));
-    }
+		ConsoleCommandParser ccp = new ConsoleCommandParser(gameController);
+		while(true) {
+			ccp.waitForCommand();
+		}
+	}
 }
